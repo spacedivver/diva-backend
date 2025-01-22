@@ -47,22 +47,7 @@ public class AnalysisService {
             Financial financial = financialRepository.findByStockCode(stockCode);
 
             return FinancialResponse.builder()
-                    .stockCode(financial.getStockCode())
-                    .currentAssets(financial.getCurrentAssets())
-                    .nonCurrentAssets(financial.getNonCurrentAssets())
-                    .totalAssets(financial.getTotalAssets())
-                    .currentLiabilities(financial.getCurrentLiabilities())
-                    .nonCurrentLiabilities(financial.getNonCurrentLiabilities())
-                    .totalLiabilities(financial.getTotalLiabilities())
-                    .capitalStock(financial.getCapitalStock())
-                    .retainedEarnings(financial.getRetainedEarnings())
-                    .totalEquity(financial.getTotalEquity())
-                    .revenue(financial.getRevenue())
-                    .operatingIncome(financial.getOperatingIncome())
-                    .incomeBeforeTaxes(financial.getIncomeBeforeTaxes())
-                    .netIncome(financial.getNetIncome())
-                    .netIncomeLess(financial.getNetIncomeLess())
-                    .comprehensiveIncome(financial.getComprehensiveIncome())
+                    .content(financial.getContent())
                     .build();
     }
 
