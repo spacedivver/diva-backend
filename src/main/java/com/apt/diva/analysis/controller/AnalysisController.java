@@ -5,7 +5,7 @@ import com.apt.diva.expertanalysis.domain.response.ExpertAnalysisResponse;
 import com.apt.diva.financial.domain.response.FinancialResponse;
 import com.apt.diva.investmentmovement.domain.Response.InvestmentMovementResponse;
 import com.apt.diva.macroeconomics.domain.response.MacroeconomicsResponse;
-import com.apt.diva.newspolicy.domain.response.NewsPolicyResponse;
+import com.apt.diva.newspolicy.domain.response.NewsResponse;
 import com.apt.diva.report.domain.response.ReportResponse;
 import com.apt.diva.source.domain.response.SourceResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,8 +53,8 @@ public class AnalysisController {
 
     @Operation(summary = "뉴스 관련 정보 조회")
     @GetMapping("/news")
-    public ResponseEntity<NewsPolicyResponse> getNewsPolicy(@RequestParam String stockCode) {
-        NewsPolicyResponse response = analysisService.getNews(stockCode);
+    public ResponseEntity<NewsResponse> getNewsPolicy(@RequestParam String stockCode) {
+        NewsResponse response = analysisService.getNews(stockCode);
         return ResponseEntity.ok(response);
     }
 

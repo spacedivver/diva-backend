@@ -7,12 +7,12 @@ import java.util.Date;
 
 @Entity
 @Getter
-public class NewsPolicy {
+public class News {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="news_policy_id")
-    private Long newsPolicyId;
+    @Column(name="news_id")
+    private Long newsId;
 
     @Column(name="content")
     private String content;

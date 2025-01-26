@@ -3,6 +3,8 @@ package com.apt.diva.source.domain.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 public class Source {
@@ -14,5 +16,11 @@ public class Source {
 
     @Column(name="url")
     private String url;
+
+    @Column(name="created_at")
+    private Date createdAt;
+
+    @Column(name="updated_at")
+    private Date updatedAt;
 
 }

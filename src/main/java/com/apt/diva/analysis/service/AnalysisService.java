@@ -14,8 +14,8 @@ import com.apt.diva.investmentmovement.repository.InvestmentMovementRepository;
 import com.apt.diva.macroeconomics.domain.entity.Macroeconomics;
 import com.apt.diva.macroeconomics.domain.response.MacroeconomicsResponse;
 import com.apt.diva.macroeconomics.repository.MacroeconomicRepository;
-import com.apt.diva.newspolicy.domain.entity.NewsPolicy;
-import com.apt.diva.newspolicy.domain.response.NewsPolicyResponse;
+import com.apt.diva.newspolicy.domain.entity.News;
+import com.apt.diva.newspolicy.domain.response.NewsResponse;
 import com.apt.diva.newspolicy.repository.NewsPolicyRepository;
 import com.apt.diva.report.domain.entity.Report;
 import com.apt.diva.report.domain.response.ReportResponse;
@@ -65,14 +65,14 @@ public class AnalysisService {
                 .build();
     }
 
-    public NewsPolicyResponse getNews(String stockCode){
+    public NewsResponse getNews(String stockCode){
 
         Financial financial = financialRepository.findByStockCode(stockCode);
 
         AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
 
-        NewsPolicy newsPolicy = newsPolicyRepository.findByNewsPolicyId(analysisResult.getNewsPolicyId());
-        return NewsPolicyResponse.builder()
+        News newsPolicy = newsPolicyRepository.findByNewsPolicyId(analysisResult.getNewsPolicyId());
+        return NewsResponse.builder()
                 .content(newsPolicy.getContent())
                 .build();
     }
