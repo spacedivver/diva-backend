@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class NewsPolicyResponse {
+public class NewsResponse {
     private String content;
 }
