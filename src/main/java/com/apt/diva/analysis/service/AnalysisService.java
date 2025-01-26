@@ -52,7 +52,7 @@ public class AnalysisService {
     }
 
 
-    public MacroeconomicsResponse getMacroeconomic(String stockCode) {
+    public MacroeconomicsResponse getMacroeconomics(String stockCode) {
 
         Financial financial = financialRepository.findByStockCode(stockCode);
 
@@ -65,7 +65,7 @@ public class AnalysisService {
                 .build();
     }
 
-    public NewsPolicyResponse getNewsPolicy(String stockCode){
+    public NewsPolicyResponse getNews(String stockCode){
 
         Financial financial = financialRepository.findByStockCode(stockCode);
 

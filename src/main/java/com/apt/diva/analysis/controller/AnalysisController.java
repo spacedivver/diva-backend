@@ -30,21 +30,14 @@ public class AnalysisController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "거시 경제 관련 정보 조회")
-    @GetMapping("/macroeconomic")
-    public ResponseEntity<MacroeconomicsResponse> getMacroeconomic(@RequestParam String stockCode) {
-        MacroeconomicsResponse response = analysisService.getMacroeconomic(stockCode);
+    @Operation(summary = "거시 경제, 정책 관련 정보 조회")
+    @GetMapping("/macroeconomics")
+    public ResponseEntity<MacroeconomicsResponse> getMacroeconomics(@RequestParam String stockCode) {
+        MacroeconomicsResponse response = analysisService.getMacroeconomics(stockCode);
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "정책 관련 정보 조회")
-    @GetMapping("/news-policy")
-    public ResponseEntity<NewsPolicyResponse> getNewsPolicy(@RequestParam String stockCode) {
-        NewsPolicyResponse response = analysisService.getNewsPolicy(stockCode);
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(summary = "투자 동향 관련 정보 조회")
+    @Operation(summary = "시장 심리 및 투자 동향 관련 정보 조회")
     @GetMapping("/investment-movement")
     public ResponseEntity<InvestmentMovementResponse> getInvestmentMovement(@RequestParam String stockCode) {
         InvestmentMovementResponse response = analysisService.getInvestmentMovement(stockCode);
@@ -54,7 +47,14 @@ public class AnalysisController {
     @Operation(summary = "전문가 분석 관련 정보 조회")
     @GetMapping("/expert-analysis")
     public ResponseEntity<ExpertAnalysisResponse> getExpertAnalysis(@RequestParam String stockCode) {
-         ExpertAnalysisResponse response = analysisService.getExpertAnalysis(stockCode);
+        ExpertAnalysisResponse response = analysisService.getExpertAnalysis(stockCode);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "뉴스 관련 정보 조회")
+    @GetMapping("/news")
+    public ResponseEntity<NewsPolicyResponse> getNewsPolicy(@RequestParam String stockCode) {
+        NewsPolicyResponse response = analysisService.getNews(stockCode);
         return ResponseEntity.ok(response);
     }
 
