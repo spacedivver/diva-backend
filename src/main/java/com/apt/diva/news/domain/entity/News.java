@@ -1,4 +1,4 @@
-package com.apt.diva.newspolicy.domain.entity;
+package com.apt.diva.news.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -5,7 +5,7 @@ import com.apt.diva.expertanalysis.domain.response.ExpertAnalysisResponse;
 import com.apt.diva.financial.domain.response.FinancialResponse;
 import com.apt.diva.investmentmovement.domain.Response.InvestmentMovementResponse;
 import com.apt.diva.macroeconomics.domain.response.MacroeconomicsResponse;
-import com.apt.diva.newspolicy.domain.response.NewsResponse;
+import com.apt.diva.news.domain.response.NewsResponse;
 import com.apt.diva.report.domain.response.ReportResponse;
 import com.apt.diva.source.domain.response.SourceResponse;
 import io.swagger.v3.oas.annotations.Operation;
