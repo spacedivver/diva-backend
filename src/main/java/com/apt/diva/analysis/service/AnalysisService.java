@@ -14,18 +14,23 @@ import com.apt.diva.investmentmovement.repository.InvestmentMovementRepository;
 import com.apt.diva.macroeconomics.domain.entity.Macroeconomics;
 import com.apt.diva.macroeconomics.domain.response.MacroeconomicsResponse;
 import com.apt.diva.macroeconomics.repository.MacroeconomicRepository;
-import com.apt.diva.newspolicy.domain.entity.News;
-import com.apt.diva.newspolicy.domain.response.NewsResponse;
-import com.apt.diva.newspolicy.repository.NewsPolicyRepository;
+import com.apt.diva.news.domain.entity.News;
+import com.apt.diva.news.domain.response.NewsResponse;
+import com.apt.diva.news.repository.NewsRepository;
 import com.apt.diva.report.domain.entity.Report;
 import com.apt.diva.report.domain.response.ReportResponse;
 import com.apt.diva.report.repository.ReportRepository;
 import com.apt.diva.source.domain.entity.Source;
 import com.apt.diva.source.domain.response.SourceResponse;
 import com.apt.diva.source.repository.SourceRepository;
+import com.apt.diva.stock.domain.request.AIRequest;
+import com.apt.diva.stock.domain.response.AIResponse;
+import com.apt.diva.stock.repository.StockRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 
 @Service
@@ -36,29 +41,64 @@ public class AnalysisService {
     private final AnalysisResultRepository analysisResultRepository;
     private final FinancialRepository financialRepository;
     private final MacroeconomicRepository macroeconomicRepository;
-    private final NewsPolicyRepository newsPolicyRepository;
+    private final NewsRepository newsRepository;
     private final InvestmentMovementRepository investmentmovementRepository;
     private final ExpertAnalysisRepository expertAnalysisRepository;
     private final SourceRepository sourceRepository;
     private final ReportRepository reportRepository;
+    private final StockRepository stockRepository;
+
+    private final RestTemplate restTemplate;
+
+    @Value("${ai.server.url}")
+    private String aiServerUrl;
 
     public FinancialResponse getFinancial(String stockCode) {
 
-            Financial financial = financialRepository.findByStockCode(stockCode);
+        String fullUrl = aiServerUrl + "/financial";
 
-            return FinancialResponse.builder()
-                    .content(financial.getContent())
-                    .build();
+        AIRequest aiRequest = new AIRequest(stockCode);
+
+        AIResponse aiResponse = restTemplate.postForObject(
+                fullUrl,
+                aiRequest,
+                AIResponse.class
+        );
+
+        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+            throw new RuntimeException("AI 서버 응답이 null입니다");
+        }
+
+        // AI 서버로부터 받은 analysis_result_id 추출
+        Long financialId = aiResponse.getAnalysis_result_id();
+
+        Financial financial = financialRepository.findByFinancialId(financialId);
+
+        return FinancialResponse.builder()
+                .content(financial.getContent())
+                .build();
     }
 
 
     public MacroeconomicsResponse getMacroeconomics(String stockCode) {
 
-        Financial financial = financialRepository.findByStockCode(stockCode);
+        String fullUrl = aiServerUrl + "/economy";
 
-        AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
+        AIRequest aiRequest = new AIRequest(stockCode);
 
-        Macroeconomics macroeconomic=macroeconomicRepository.findByMacroeconomicsId(analysisResult.getMacroeconomicsId());
+        AIResponse aiResponse = restTemplate.postForObject(
+                fullUrl,
+                aiRequest,
+                AIResponse.class
+        );
+
+        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+            throw new RuntimeException("AI 서버 응답이 null입니다");
+        }
+
+        // AI 서버로부터 받은 analysis_result_id 추출
+        Long macroeconomicId = aiResponse.getAnalysis_result_id();
+        Macroeconomics macroeconomic=macroeconomicRepository.findByMacroeconomicsId(macroeconomicId);
 
         return MacroeconomicsResponse.builder()
                 .content(macroeconomic.getContent())
@@ -67,19 +107,32 @@ public class AnalysisService {
 
     public NewsResponse getNews(String stockCode){
 
-        Financial financial = financialRepository.findByStockCode(stockCode);
+        String fullUrl = aiServerUrl + "/news";
 
-        AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
+        AIRequest aiRequest = new AIRequest(stockCode);
 
-        News newsPolicy = newsPolicyRepository.findByNewsPolicyId(analysisResult.getNewsPolicyId());
+        AIResponse aiResponse = restTemplate.postForObject(
+                fullUrl,
+                aiRequest,
+                AIResponse.class
+        );
+
+        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+            throw new RuntimeException("AI 서버 응답이 null입니다");
+        }
+
+        // AI 서버로부터 받은 analysis_result_id 추출
+        Long newsId = aiResponse.getAnalysis_result_id();
+
+        News news = newsRepository.findByNewsId(newsId);
         return NewsResponse.builder()
-                .content(newsPolicy.getContent())
+                .content(news.getContent())
                 .build();
     }
 
     public InvestmentMovementResponse getInvestmentMovement(String stockCode){
 
-        Financial financial = financialRepository.findByStockCode(stockCode);
+        Financial financial = financialRepository.findByFinancialId(Long.parseLong(stockCode));
 
         AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
 
@@ -93,11 +146,24 @@ public class AnalysisService {
 
     public ExpertAnalysisResponse getExpertAnalysis(String stockCode){
 
-        Financial financial = financialRepository.findByStockCode(stockCode);
+        String fullUrl = aiServerUrl + "/expert";
 
-        AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
+        AIRequest aiRequest = new AIRequest(stockCode);
 
-        ExpertAnalysis expertAnalysis = expertAnalysisRepository.findByExpertAnalysisId(analysisResult.getExpertAnalysisId());
+        AIResponse aiResponse = restTemplate.postForObject(
+                fullUrl,
+                aiRequest,
+                AIResponse.class
+        );
+
+        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+            throw new RuntimeException("AI 서버 응답이 null입니다");
+        }
+
+        // AI 서버로부터 받은 analysis_result_id 추출
+        Long expertAnalysisId = aiResponse.getAnalysis_result_id();
+
+        ExpertAnalysis expertAnalysis = expertAnalysisRepository.findByExpertAnalysisId(expertAnalysisId);
 
         return ExpertAnalysisResponse.builder()
                 .content(expertAnalysis.getContent())
@@ -107,7 +173,7 @@ public class AnalysisService {
 
     public SourceResponse getSource(String stockCode){
 
-        Financial financial = financialRepository.findByStockCode(stockCode);
+        Financial financial = financialRepository.findByFinancialId(Long.parseLong(stockCode));
 
         AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
 
@@ -120,7 +186,7 @@ public class AnalysisService {
 
     public ReportResponse getReport(String stockCode){
 
-        Financial financial = financialRepository.findByStockCode(stockCode);
+        Financial financial = financialRepository.findByFinancialId(Long.parseLong(stockCode));
 
         AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
 

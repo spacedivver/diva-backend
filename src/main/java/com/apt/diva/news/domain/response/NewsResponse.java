@@ -1,4 +1,4 @@
-package com.apt.diva.newspolicy.domain.response;
+package com.apt.diva.news.domain.response;
 
 import lombok.Builder;
 import lombok.Data;
