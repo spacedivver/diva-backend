@@ -27,6 +27,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packaged-application
+          path: build/libs/*.jar
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
