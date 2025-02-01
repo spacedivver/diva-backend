@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AIResponse {
-    private Long analysis_result_id;
+    private Long analysisResultId;
 }
