@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Entity
 @Getter
+@Table(name="expert_analysis")
 public class ExpertAnalysis {
 
     @Id

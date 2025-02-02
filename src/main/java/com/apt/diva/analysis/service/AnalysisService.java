@@ -65,12 +65,12 @@ public class AnalysisService {
                 AIResponse.class
         );
 
-        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+        if (aiResponse == null || aiResponse.getAnalysisResultId() == null) {
             throw new RuntimeException("AI 서버 응답이 null입니다");
         }
 
         // AI 서버로부터 받은 analysis_result_id 추출
-        Long financialId = aiResponse.getAnalysis_result_id();
+        Long financialId = aiResponse.getAnalysisResultId();
 
         Financial financial = financialRepository.findByFinancialId(financialId);
 
@@ -92,12 +92,12 @@ public class AnalysisService {
                 AIResponse.class
         );
 
-        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+        if (aiResponse == null || aiResponse.getAnalysisResultId() == null) {
             throw new RuntimeException("AI 서버 응답이 null입니다");
         }
 
         // AI 서버로부터 받은 analysis_result_id 추출
-        Long macroeconomicId = aiResponse.getAnalysis_result_id();
+        Long macroeconomicId = aiResponse.getAnalysisResultId();
         Macroeconomics macroeconomic=macroeconomicRepository.findByMacroeconomicsId(macroeconomicId);
 
         return MacroeconomicsResponse.builder()
@@ -117,12 +117,12 @@ public class AnalysisService {
                 AIResponse.class
         );
 
-        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+        if (aiResponse == null || aiResponse.getAnalysisResultId() == null) {
             throw new RuntimeException("AI 서버 응답이 null입니다");
         }
 
         // AI 서버로부터 받은 analysis_result_id 추출
-        Long newsId = aiResponse.getAnalysis_result_id();
+        Long newsId = aiResponse.getAnalysisResultId();
 
         News news = newsRepository.findByNewsId(newsId);
         return NewsResponse.builder()
@@ -148,7 +148,11 @@ public class AnalysisService {
 
         String fullUrl = aiServerUrl + "/expert";
 
+        System.out.println(fullUrl);
+        System.out.println(stockCode);
+
         AIRequest aiRequest = new AIRequest(stockCode);
+        System.out.println(aiRequest.getStockCode());
 
         AIResponse aiResponse = restTemplate.postForObject(
                 fullUrl,
@@ -156,12 +160,16 @@ public class AnalysisService {
                 AIResponse.class
         );
 
-        if (aiResponse == null || aiResponse.getAnalysis_result_id() == null) {
+
+        System.out.println("aiResponse:"+aiResponse.getAnalysisResultId());
+
+        if (aiResponse == null || aiResponse.getAnalysisResultId() == null) {
+
             throw new RuntimeException("AI 서버 응답이 null입니다");
         }
 
         // AI 서버로부터 받은 analysis_result_id 추출
-        Long expertAnalysisId = aiResponse.getAnalysis_result_id();
+        Long expertAnalysisId = aiResponse.getAnalysisResultId();
 
         ExpertAnalysis expertAnalysis = expertAnalysisRepository.findByExpertAnalysisId(expertAnalysisId);
 
