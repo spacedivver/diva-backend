@@ -76,7 +76,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "build/libs/diva-0.0.1-SNAPSHOT.jar"
+          source: "build/diva-0.0.1-SNAPSHOT.jar"
           target: ${{ secrets.REMOTE_DIR }}
 
       - name: Deploy to AWS EC2
