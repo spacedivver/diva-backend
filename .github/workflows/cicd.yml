@@ -45,26 +45,41 @@ jobs:
           name: packaged-application
           path: deployment
 
+      - name: Create remote temporary directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            mkdir -p ${{ secrets.REMOTE_DIR }}
+
+      - name: Upload
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "build/libs/diva-0.0.1-SNAPSHOT.jar"
+          target: ${{ secrets.REMOTE_DIR }}
+
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-          REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
         with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-
-            mkdir -p ${REMOTE_DIR}
             
-            # 기존 실행 중인 애플리케이션 종료 (백그라운드 실행된 프로세스 종료)
-            pkill -f 'java -jar ${REMOTE_DIR}/'
+            echo "Stopping any running Java application..."
+            # 실행 중인 애플리케이션 종료; 실행 중이 없으면 오류를 무시합니다.
+            pkill -f "java -jar ${secrets.REMOTE_DIR}/" || echo "No running Java process found."
+            sleep 5
             
-            # JAR 파일 전송
-            scp -o StrictHostKeyChecking=no deployment/*.jar ${SSH_USERNAME}@${SSH_HOST}:${REMOTE_DIR}
+            echo "Searching for the latest JAR file in ${secrets.REMOTE_DIR}..."
+            JAR_FILE=$(ls -t ${secrets.REMOTE_DIR}/*.jar | head -n 1)
+            echo "Deploying JAR file: $JAR_FILE"
             
-            # 최신 JAR 파일 찾기
-            JAR_FILE=$(ls -t ${REMOTE_DIR}/*.jar | head -n 1)
-            
-            # JAR 파일 실행 (백그라운드 실행)
-            nohup java -jar $JAR_FILE > ${REMOTE_DIR}/app.log 2>&1 &
+            echo "Starting the application..."
+            nohup java -jar $JAR_FILE > ${secrets.REMOTE_DIR}/app.log 2>&1 &
+            echo "Deployment complete."
