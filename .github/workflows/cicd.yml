@@ -60,14 +60,14 @@ jobs:
           script: |
             mkdir -p ${{ secrets.REMOTE_DIR }}
 
-      - name: List build/libs directory
-        run: ls -alR build
-
-      - name: Find diva-0.0.1-SNAPSHOT.jar
-        run: find . -type f -name "diva-0.0.1-SNAPSHOT.jar"
-
-      - name: Find diva-0.0.1-SNAPSHOT.jar in entire system
-        run: sudo find / -type f -name "diva-0.0.1-SNAPSHOT.jar" 2>/dev/null
+#      - name: List build/libs directory
+#        run: ls -alR build
+#
+#      - name: Find diva-0.0.1-SNAPSHOT.jar
+#        run: find . -type f -name "diva-0.0.1-SNAPSHOT.jar"
+#
+#      - name: Find diva-0.0.1-SNAPSHOT.jar in entire system
+#        run: sudo find / -type f -name "diva-0.0.1-SNAPSHOT.jar" 2>/dev/null
 
 
       - name: Upload
@@ -93,7 +93,7 @@ jobs:
             sleep 5
 
             echo "Searching for the latest JAR file in ${REMOTE_DIR}..."
-            JAR_FILE=$(ls -t ${REMOTE_DIR}/*.jar | head -n 1)
+            JAR_FILE=$(ls -t ${REMOTE_DIR}/diva-0.0.1-SNAPSHOT.jar | head -n 1)
             echo "Deploying JAR file: $JAR_FILE"
 
             echo "Starting the application..."
