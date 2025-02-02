@@ -61,7 +61,14 @@ jobs:
             mkdir -p ${{ secrets.REMOTE_DIR }}
 
       - name: List build/libs directory
-        run: ls -al build/libs/
+        run: ls -alR build
+
+      - name: Find diva-0.0.1-SNAPSHOT.jar
+        run: find . -type f -name "diva-0.0.1-SNAPSHOT.jar"
+
+      - name: Find diva-0.0.1-SNAPSHOT.jar in entire system
+        run: sudo find / -type f -name "diva-0.0.1-SNAPSHOT.jar" 2>/dev/null
+
 
       - name: Upload
         uses: appleboy/scp-action@master
@@ -69,7 +76,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "build/libs/*.jar"
+          source: "build/libs/diva-0.0.1-SNAPSHOT.jar"
           target: ${{ secrets.REMOTE_DIR }}
 
       - name: Deploy to AWS EC2
