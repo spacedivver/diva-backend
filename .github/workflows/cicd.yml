@@ -54,6 +54,9 @@ jobs:
           script: |
             mkdir -p ${{ secrets.REMOTE_DIR }}
 
+      - name: List build/libs directory
+        run: ls -al build/libs/
+
       - name: Upload
         uses: appleboy/scp-action@master
         with:
