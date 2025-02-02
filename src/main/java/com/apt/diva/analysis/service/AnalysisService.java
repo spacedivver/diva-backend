@@ -148,6 +148,9 @@ public class AnalysisService {
 
         String fullUrl = aiServerUrl + "/expert";
 
+        System.out.println(fullUrl);
+        System.out.println(stockCode);
+
         AIRequest aiRequest = new AIRequest(stockCode);
         System.out.println(aiRequest.getStockCode());
 
@@ -157,18 +160,18 @@ public class AnalysisService {
                 AIResponse.class
         );
 
+
+        System.out.println("aiResponse:"+aiResponse.getAnalysisResultId());
+
         if (aiResponse == null || aiResponse.getAnalysisResultId() == null) {
+
             throw new RuntimeException("AI 서버 응답이 null입니다");
         }
 
         // AI 서버로부터 받은 analysis_result_id 추출
         Long expertAnalysisId = aiResponse.getAnalysisResultId();
 
-        System.out.println(expertAnalysisId);
-
         ExpertAnalysis expertAnalysis = expertAnalysisRepository.findByExpertAnalysisId(expertAnalysisId);
-
-        System.out.println(expertAnalysis.getContent());
 
         return ExpertAnalysisResponse.builder()
                 .content(expertAnalysis.getContent())
