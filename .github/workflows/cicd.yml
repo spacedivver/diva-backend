@@ -43,7 +43,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: packaged-application
-          path: deployment
+          path: build
 
       - name: Create remote temporary directory
         uses: appleboy/ssh-action@master
