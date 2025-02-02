@@ -151,7 +151,7 @@ public class AnalysisService {
         System.out.println(fullUrl);
         System.out.println(stockCode);
 
-        AIRequest aiRequest = new AIRequest("005930");
+        AIRequest aiRequest = new AIRequest(stockCode);
         System.out.println(aiRequest.getStockCode());
 
         AIResponse aiResponse = restTemplate.postForObject(
