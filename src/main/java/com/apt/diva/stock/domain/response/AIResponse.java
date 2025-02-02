@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AIResponse {
-
+  
 //    @JsonProperty("analysis_result_id") // JSON 필드명과 매핑
     private Long analysisResultId;
 

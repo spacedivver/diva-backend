@@ -160,6 +160,7 @@ public class AnalysisService {
                 AIResponse.class
         );
 
+
         System.out.println("aiResponse:"+aiResponse.getAnalysisResultId());
 
         if (aiResponse == null || aiResponse.getAnalysisResultId() == null) {
