@@ -93,9 +93,9 @@ jobs:
             sleep 5
 
             echo "Searching for the latest JAR file in ${REMOTE_DIR}..."
-            JAR_FILE=$(ls -t ${REMOTE_DIR}/build/diva-0.0.1-SNAPSHOT.jar | head -n 1)
+            JAR_FILE=$(ls -t diva-0.0.1-SNAPSHOT.jar | head -n 1)
             echo "Deploying JAR file: $JAR_FILE"
 
             echo "Starting the application..."
-            nohup java -jar $JAR_FILE > ${REMOTE_DIR}/build/app.log 2>&1 &
+            nohup java -jar $JAR_FILE > nohup.out 2>&1 &
             echo "Deployment complete."
