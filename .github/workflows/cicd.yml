@@ -88,14 +88,15 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            echo "REMOTE_DIR is: '$REMOTE_DIR'"
             echo "Stopping any running Java application..."
-            pkill -f "java -jar ${REMOTE_DIR}/" || echo "No running Java process found."
+            pkill -f "java -jar ${REMOTE_DIR}/diva-0.0.1-SNAPSHOT.jar" || echo "No running Java process found."
             sleep 5
 
-            echo "Searching for the latest JAR file in ${REMOTE_DIR}..."
-            JAR_FILE=$(ls -t diva-0.0.1-SNAPSHOT.jar | head -n 1)
-            echo "Deploying JAR file: $JAR_FILE"
+#            echo "Searching for the latest JAR file in ${REMOTE_DIR}..."
+#            JAR_FILE=$(ls -t ${REMOTE_DIR}/diva-0.0.1-SNAPSHOT.jar | head -n 1)
+#            echo "Deploying JAR file: $JAR_FILE"
 
             echo "Starting the application..."
-            nohup java -jar $JAR_FILE > nohup.out 2>&1 &
+            nohup java -jar ${REMOTE_DIR}/diva-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
             echo "Deployment complete."
