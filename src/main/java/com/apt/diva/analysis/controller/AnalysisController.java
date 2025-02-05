@@ -86,7 +86,7 @@ public class AnalysisController {
 
     @Operation(summary = "뉴스 관련 정보 조회")
     @PostMapping("/news/{stockCode}")
-    public ResponseEntity<NewsResponse> getNewsPolicy(@RequestParam String stockCode) {
+    public ResponseEntity<NewsResponse> getNewsPolicy(@PathVariable String stockCode) {
 
         NewsResponse response = analysisService.getNews(stockCode);
 
@@ -101,7 +101,7 @@ public class AnalysisController {
 
     @Operation(summary = "출처 관련 정보 조회")
     @PostMapping("/source/{stockCode}")
-    public ResponseEntity<SourceResponse> getSource(@RequestParam String stockCode) {
+    public ResponseEntity<SourceResponse> getSource(@PathVariable String stockCode) {
 
         SourceResponse response=analysisService.getSource(stockCode);
 
@@ -116,7 +116,7 @@ public class AnalysisController {
 
     @Operation(summary = "종합 분석 리포트 조회")
     @PostMapping("/report/{stockCode}")
-    public ResponseEntity<ReportResponse> getReport(@RequestParam String stockCode){
+    public ResponseEntity<ReportResponse> getReport(@PathVariable String stockCode){
 
         ReportResponse response=analysisService.getReport(stockCode);
 
