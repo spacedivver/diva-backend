@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class ReportResponse {
-    private String reportUrl;
+    private String content;
 }
