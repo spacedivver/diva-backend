@@ -194,14 +194,34 @@ public class AnalysisService {
 
     public ReportResponse getReport(String stockCode){
 
-        Financial financial = financialRepository.findByFinancialId(Long.parseLong(stockCode));
+        String fullUrl = aiServerUrl + "/report";
 
-        AnalysisResult analysisResult=analysisResultRepository.findByFinancialId(financial.getFinancialId());
+        System.out.println(fullUrl);
+        System.out.println(stockCode);
 
-        Report report=reportRepository.findByReportId(analysisResult.getReportId());
+        AIRequest aiRequest = new AIRequest(stockCode);
+        System.out.println(aiRequest.getStockCode());
+
+        AIResponse aiResponse = restTemplate.postForObject(
+                fullUrl,
+                aiRequest,
+                AIResponse.class
+        );
+
+        System.out.println("aiResponse:"+aiResponse.getAnalysisResultId());
+
+        if (aiResponse == null || aiResponse.getAnalysisResultId() == null) {
+
+            throw new RuntimeException("AI 서버 응답이 null입니다");
+        }
+
+        // AI 서버로부터 받은 analysis_result_id 추출
+        Long reportId = aiResponse.getAnalysisResultId();
+
+        Report report=reportRepository.findByReportId(reportId);
 
         return ReportResponse.builder()
-                .reportUrl(report.getReportUrl())
+                .content(report.getContent())
                 .build();
     }
 

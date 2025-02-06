@@ -12,8 +12,8 @@ public class Report {
     @Column(name="report_id")
     private Long reportId;
 
-    @Column(name="report_url")
-    private String reportUrl;
+    @Column(name="content")
+    private String content;
 
     @Column(name="created_at")
     private Long createdAt;
