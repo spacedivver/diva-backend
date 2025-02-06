@@ -3,6 +3,8 @@ package com.apt.diva.report.domain.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 public class Report {
@@ -16,9 +18,9 @@ public class Report {
     private String content;
 
     @Column(name="created_at")
-    private Long createdAt;
+    private Date createdAt;
 
     @Column(name="updated_at")
-    private Long updatedAt;
+    private Date updatedAt;
 
 }
