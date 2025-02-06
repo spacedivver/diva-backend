@@ -4,5 +4,5 @@ import com.apt.diva.analysis.domain.entity.AnalysisResult;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnalysisResultRepository extends JpaRepository<AnalysisResult, Long> {
-    AnalysisResult findByFinancialId(Long financialId);
+    AnalysisResult findByAnalysisResultId(Long analysisResultId);
 }
