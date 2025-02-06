@@ -14,8 +14,21 @@ public class Source {
     @Column(name="source_id")
     private Long sourceId;
 
+    @Column(name="analysis_result_id")
+    private Long analysisResultId;
+
+    @Column(name="title")
+    private String title;
+
+    @Column(name="description")
+    private String description;
+
     @Column(name="url")
     private String url;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="category")
+    private Category category;
 
     @Column(name="created_at")
     private Date createdAt;
